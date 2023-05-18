@@ -2,21 +2,18 @@
 
 class Point:
     def __init__(self, x: float, y: float, z: float) -> None:
-        self._x = x
-        self._y = y
-        self._z = z
+        """
+        Creates a point.
+        
+        @param x: The x coordinate of the point.
+        @param y: The y coordinate of the point.
+        @param z: The z coordinate of the point.
+        """
+        self.x = x
+        self.y = y
+        self.z = z
     
-    @property
-    def x(self) -> float:
-        return self._x
-    
-    @property
-    def y(self) -> float:
-        return self._y
-    
-    @property
-    def z(self) -> float:
-        return self._z
+
     
     def __repr__(self) -> str:
         return f"Point({self.x}, {self.y}, {self.z})"
