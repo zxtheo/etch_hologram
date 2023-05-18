@@ -1,7 +1,12 @@
+import math
 import tkinter as tk
-from tkinter import filedialog
-
+from class_draw import Draw
 class Application(tk.Frame):
+    """
+    This is a class that inherits from the tkinter Frame class. It creates a GUI application with widgets and a slider. 
+    @param master - the parent widget
+    @return None
+    """
     def __init__(self, master=None):
         """
         This is a constructor for a tkinter Frame object. It initializes the object and creates the widgets for the frame.
@@ -11,6 +16,7 @@ class Application(tk.Frame):
         tk.Frame.__init__(self, master)
         self.pack()
         self.createWidgets()
+        
         
 
     def createWidgets(self):
@@ -30,7 +36,7 @@ class Application(tk.Frame):
         slider_frame.pack(side="top", pady=10)
 
         # Create the sliders and add them to the frame
-        self.rotation_slider = tk.Scale(slider_frame, from_=-2, to=2, showvalue=True, resolution=0.1, orient="horizontal", borderwidth=2, relief="groove", label="Rotation")
+        self.rotation_slider = tk.Scale(slider_frame, from_=-math.pi, to=0, showvalue=True, resolution=0.1, orient="horizontal", borderwidth=2, relief="groove", label="Rotation")
         self.rotation_slider.pack(side="left", padx=10)
         self.density_slider = tk.Scale(slider_frame, from_=2, to=50, showvalue=True, resolution=0.1, orient="horizontal", borderwidth=2, relief="groove", label="Density")
         self.density_slider.pack(side="left", padx=10)
@@ -43,12 +49,13 @@ class Application(tk.Frame):
         self.y_adjust_slider.pack(side="left", padx=10)
         self.canvas = tk.Canvas(self, width=1000, height=1000, borderwidth=2, relief="solid")
         self.canvas.pack(side="left")
+        self.draw = Draw(self.canvas)
 
         # Configure the sliders to call the on_slider_change method when their value changes
-        self.rotation_slider.config(command=self.on_slider_change)
-        self.density_slider.config(command=self.on_slider_change)
-        self.x_adjust_slider.config(command=self.on_slider_change)
-        self.y_adjust_slider.config(command=self.on_slider_change)
+        self.rotation_slider.config(command=self.on_rotation_slider_change)
+        self.density_slider.config(command=self.on_density_slider_change)
+        self.x_adjust_slider.config(command=self.on_x_adjust_slider_change)
+        self.y_adjust_slider.config(command=self.on_y_adjust_slider_change)
 
     def open_file(self):
         """
@@ -56,16 +63,36 @@ class Application(tk.Frame):
         @return The file path of the selected file.
         """
         file_path = tk.filedialog.askopenfilename()
+        return file_path
         # Do something with the file_path, such as load an image onto the canvas
 
-    def on_slider_change(self, value):
-        """
-        This function is called when a slider is changed. It prints the new value of the slider and deletes all items from a canvas.
-        @param self - the object instance
-        @param value - the new value of the slider
-        """
-        print("Slider value changed to", value)
-        self.canvas.delete("all")
+    def on_rotation_slider_change(self, value):
+
+        #print("Rotation Slider value changed to", value)
+        self.draw.rotation = float(value)
+        self.draw.draw()
+
+    def on_density_slider_change(self, value):
+
+        #print("density Slider value changed to", value)
+        self.draw.update_density(float(value))
+        self.draw.draw()
+
+        
+    def on_x_adjust_slider_change(self, value):
+
+        #print("x_adjust Slider value changed to", value)
+        self.draw.x_adjust = float(value)
+        self.draw.draw()
+    def on_y_adjust_slider_change(self, value):
+
+        #print("y_adjust Slider value changed to", value)
+        self.draw.y_adjust = float(value)
+        self.draw.draw()
+
+    
+        
+
 
 
 
